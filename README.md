@@ -93,7 +93,18 @@ boolean logout();
 @return boolean 是否进入发送消息队列
 boolean sendText(String msgId, String touid, String text, ConvType convType, byte[] padding, int timeout);
 ```
-### 6、发送文件
+### 6、发送自定义消息
+```
+@param msgId 消息ID (必填)
+@param touid 接收方 (必填)
+@param text 发送的文本内容 (必填)
+@param convType single or group 单聊/群聊 (必填)
+@param padding 附加信息
+@param timeout 超时 单位秒
+@return boolean 是否进入发送消息队列
+boolean sendMixedText(String msgId, String touid, String text, ConvType convType, byte[] padding, int timeout);
+```
+### 7、发送文件
 ```
 @param msgId 消息ID (必填)
 @param touid 接收方 (必填)
@@ -108,7 +119,7 @@ boolean sendText(String msgId, String touid, String text, ConvType convType, byt
 @return int分片的总数
 int sendFile(String msgId, String touid, String filepath, String filename, MetaMessageType type, int[] index, ConvType convType, byte[] padding, byte[] thumbnail, int timeout);
 ```
-### 7、下载文件
+### 8、下载文件
 ```
 @param fileId 需要的文件ID (必填)
 @param downloadPath 指定下载到的路径 (必填)
@@ -121,7 +132,7 @@ int sendFile(String msgId, String touid, String filepath, String filename, MetaM
 @return boolean 是否进入发送队列
 int downloadFile(String fileId, String downloadPath, int fileLength, int index[], int pieceSize, int timeout);
 ```
-### 8、发送语音
+### 9、发送语音
 ```
 @param msgId 消息ID (必填)
 @param touid 接收方 (必填)
@@ -135,7 +146,7 @@ int downloadFile(String fileId, String downloadPath, int fileLength, int index[]
 @return boolean 是否进入发送队列
 boolean sendVoiceContinue(String msgId, String touid, String spanId, int spanSequenceNo, boolean endTag, byte[] audioData, ConvType convType, byte[] padding, int timeout);
 ```
-### 9、创建群组
+### 10、创建群组
 
 ```
 @param httpCallback回调 (String groupId)
@@ -143,7 +154,7 @@ boolean sendVoiceContinue(String msgId, String touid, String spanId, int spanSeq
 @return
 boolean shortGroupCreate(HttpCallback httpCallback, int timeout);
 ```
-### 10、退出群组
+### 11、退出群组
 
 ```
 @param gid  群组Id
@@ -152,7 +163,7 @@ boolean shortGroupCreate(HttpCallback httpCallback, int timeout);
 @return
 boolean shortExitGroup(long gid, HttpCallback httpCallback, int timeout);
 ```
-### 11、添加群成员
+### 12、添加群成员
 
 ```
 @param gid  群组Id
@@ -162,7 +173,7 @@ boolean shortExitGroup(long gid, HttpCallback httpCallback, int timeout);
 @return
 boolean shortGroupuserAdd(long gid, String uids, HttpCallback httpCallback, int timeout);
 ```
-### 12、删除群成员
+### 13、删除群成员
 ```
 @param gid  群组Id
 @param uids 用户Ids ["",""]
@@ -171,7 +182,7 @@ boolean shortGroupuserAdd(long gid, String uids, HttpCallback httpCallback, int 
 @return
 boolean shortGroupuserDel(long gid, String uids, HttpCallback httpCallback, int timeout);
 ```
-### 13、查看群成员
+### 14、查看群成员
 ```
 @param gid  群组Id
 @param httpCallback回调 [12345, 12345]
@@ -179,7 +190,7 @@ boolean shortGroupuserDel(long gid, String uids, HttpCallback httpCallback, int 
 @return
 boolean shortGroupuserList(long gid, HttpCallback httpCallback, int timeout);
 ```
-### 14、查看用户群列表
+### 15、查看用户群列表
 ```
 @param gid  群组Id
 @param httpCallback回调 [12345, 12345]
