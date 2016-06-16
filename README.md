@@ -4,15 +4,15 @@
 在您阅读此文档之前，我们假定您已具备基础的 Android 应用开发经验，并能够理解相关基础概念。
 
 ### 1、注册开发者帐号
-开发者在集成游云即时通讯、实时网络能力前，需前往 [游云官方网站](http://test.platform.ioyouyun.com/) 注册创建游云开发者帐号。
+开发者在集成游云即时通讯、实时网络能力前，需前往 [游云官方网站](http://17youyun.com/) 注册创建游云开发者帐号。
 ### 2、下载 SDK
-您可以到 [游云官方网站](http://test.platform.ioyouyun.com/) 下载游云 SDK。下载包中分为如下两部分：
+您可以到 [游云官方网站](http://17youyun.com/) 下载游云 SDK。下载包中分为如下两部分：
 - IMLib - 游云 IM 通讯能力库和相关库
 - IM Dome
 
  Dome简单集成了IM功能，供您参考。
 ### 3、创建应用
-您要进行应用开发之前，需要先在游云开发者平台创建应用。如果您已经注册了游云开发者帐号，请前往 [游云开发者平台](http://test.platform.ioyouyun.com/) 创建应用。
+您要进行应用开发之前，需要先在游云开发者平台创建应用。如果您已经注册了游云开发者帐号，请前往 [游云开发者平台](http://17youyun.com/) 创建应用。
 
 您创建完应用后，首先需要了解的是 App ClientID / Secret，它们是游云 SDK 连接服务器所必须的标识，每一个 App 对应一套 App ClientID / Secret。
 
@@ -23,26 +23,48 @@
 commons-fileupload-1.2.1.jar
 commons-httpclient-3.1.jar
 commons-lang-2.6.jar
-protobuf-java-2.4.1.jar
-weimi-sdk-android-1.0.0.jar
+youyun-protobuf-java-2.4.1.jar
+youyun-wchat-android-1.0.1.jar
 ```
 ### 2、在您项目的AndroidManifest.xml文件中加入以下权限
 
 ```
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+ <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.GET_TASKS" />
+<uses-permission android:name="android.permission.VIBRATE" />
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.WAKE_LOCK" />
+<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 ```
-### 3、调用SDK接口即可开发
+
+### 3、在您项目的AndroidManifest.xml文件中加入下面服务
+
+```
+<service android:name="com.ioyouyun.wchat.countly.OpenUDID_service" >
+        <intent-filter>
+            <action android:name="org.OpenUDID.GETUDID" />
+        </intent-filter>
+</service>
+```
+
+
+### 4、在您项目的AndroidManifest.xml文件中加入下面广播
+
+```
+<receiver android:name="com.ioyouyun.wchat.util.NetworkReceiver" >
+        <intent-filter android:priority="2147483647" >
+            <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+        </intent-filter>
+</receiver>
+```
+
+
+### 5、调用SDK接口即可开发
 
 ```
 WeimiInstance.getInstance().xxx();
