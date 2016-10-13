@@ -368,6 +368,8 @@ swiwch(type){
 	    Log.v("Tag", "发送消息成功,msgId:" + weimiNotice.getWithtag());
 	    SendBackMessage sendBackMessage = (SendBackMessage)weimiNotice.getObject();
 	    break;
+    case disconnected: // 未连接
+        break;
 	case connecting: // 连接中
 	    break;
 	case connected: // 连接成功
