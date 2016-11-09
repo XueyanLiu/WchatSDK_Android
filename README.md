@@ -6,7 +6,7 @@
 ### 1、注册开发者帐号
 开发者在集成游云即时通讯、实时网络能力前，需前往 [游云官方网站](http://17youyun.com/) 注册创建游云开发者帐号。
 ### 2、下载 SDK
-您可以到 [游云官方网站](http://17youyun.com/) 下载游云 SDK。下载包中分为如下两部分：
+您可以到 [游云Github平台](https://github.com/youyundeveloper/WchatSDK_Android) 下载游云 SDK。下载包中分为如下两部分：
 - IMLib - 游云 IM 通讯能力库和相关库
 - IM Demo
 
@@ -24,7 +24,7 @@ commons-fileupload-1.2.1.jar
 commons-httpclient-3.1.jar
 commons-lang-2.6.jar
 youyun-protobuf-java-2.4.1.jar
-youyun-wchat-android-4.0.0.jar
+youyun-wchat-android-1.0.6.0.jar
 ```
 ### 2、在您项目的AndroidManifest.xml文件中加入以下权限
 
@@ -161,7 +161,7 @@ boolean sendVoiceContinue(String msgId, String touid, String spanId, int spanSeq
 ### 10、按时间获取历史消息
 ```
 @param toUId Id 用户Id/群组Id/聊天室Id
-@param timestamp 起始时间戳
+@param timestamp 起始时间戳 ,传-1则获取最新num条聊天记录
 @param num 消息条数
 @param convType single or group 单聊/群聊 (必填)
 @param httpCallback 回调
@@ -272,6 +272,119 @@ boolean getGroupInfo(long gid, HttpCallback httpCallback, int timeout);
 @return
 boolean applyAddGroup(long gid, String msg, HttpCallback httpCallback, int timeout);
 ```
+### 11、更新群信息
+
+```
+@param gid 群Id 非空
+@param addAudit 新成员加入审核:yes 需要审核，no 不需要
+@param auditType 成员加入审核方式
+@param inviteRole 邀请权限：1 成员可邀请，2 vip之上成员可邀请，3 管理员之上成员可邀请，4 创建者可邀请
+@param sayRole 发言权限：1 成员可发言，2 vip之上成员可发言，3 管理员之上成员可发言，4 创建者可发言
+@param memberVisibile 成员可见性：0 所有人可见，1 成员可见，2 vip之上成员可见，3 管理员之上成员可见，4 创建者可见
+@param infoVisibile 群资料可见性：0 所有人可见，1 成员可见，2 vip之上成员可见，3 管理员之上成员可见，4 创建者可见
+@param isPass 群是否认证通过:yes 通过，no 不通过
+@param infoEditRole 资料编辑权限：3 管理员，4 创建者.权限大于设置就可以进行对应的操作
+@param gagRole 可以设置禁言的权限,3 管理员，4 创建者.权限大于设置就可以进行对应的操作
+@param httpCallback 回调
+@timeout 超时 单位秒
+@return
+boolean updateGroupInfo(@NonNull long gid, GroupEnum.SwitchType addAudit,
+		    GroupEnum.MemberAuditType auditType, int inviteRole,
+		    int sayRole, int memberVisibile,
+		    int infoVisibile, GroupEnum.SwitchType isPass,
+		    int infoEditRole, int gagRole,
+		    HttpCallback httpCallback, int timeout);
+```
+### 12、设置群成员角色
+
+```
+@param gid 群Id
+@param uid 要设置的用户Id
+@param role 角色，1－普通成员；2-VIP成员；3－管理员；4，群主
+@param httpCallback 回调
+@timeout 超时 单位秒
+@return
+boolean setMemberRole(@NonNull long gid, @NonNull long uid,
+		    @NonNull long role, HttpCallback httpCallback,
+		    int timeout);
+```
+### 13、设置禁言
+
+```
+@param uids 用户id,多个用户id以','分割
+@param gid 群Id
+@param time 禁言时间(分钟),默认为15分钟
+@param status 状态,true:禁言,false:解禁
+@param httpCallback 回调
+@timeout 超时 单位秒
+@return
+boolean setGag(@NonNull String uids, @NonNull long gid,
+		    long time, @NonNull boolean status,
+		    HttpCallback httpCallback, int timeout);
+```
+### 14、更新群用户扩展信息
+
+```
+@param gid 群Id
+@param uid 要设置的用户Id
+@param mark 用户在群中的别名
+@param isShowMark 是否显示别名 true 显示；false 不显示 ，默认不显示
+@param groupMsgSetType 群消息提醒设置, Remind:提醒,NoPush:发送消息,但是不push,Ignore:完全不接受消息
+@param httpCallback 回调
+@timeout 超时 单位秒
+@return
+boolean updateExendInfo(@NonNull long gid, @NonNull long uid,
+		    String mark, boolean isShowMark,
+		    GroupEnum.GroupMsgSetType groupMsgSetType, HttpCallback httpCallback,
+		    int timeout);
+```
+### 15、获取群组中的禁言用户列表
+
+```
+@param gid 群Id
+@param httpCallback 回调
+@timeout 超时 单位秒
+@return
+boolean getGagUsers(@NonNull long gid, HttpCallback httpCallback, int timeout);
+```
+### 16、更改群等级（规模，修改人数上限），不支持临时群
+
+```
+@param gid 群Id
+@param level （0：最大50人、1：100人、2：200人、3：500人）
+@param httpCallback 回调
+@timeout 超时 单位秒
+@return
+boolean changeGroupRole(@NonNull long gid, @NonNull int level, HttpCallback httpCallback, int timeout);
+```
+
+### 17、通过群ID搜索群
+
+```
+@param gid 群Id
+@param showtype 显示类型： 1：返回名称，头像；2：返回基本信息；3：返回基本信息+成员数+最近4个成员
+@param httpCallback 回调
+@timeout 超时 单位秒
+@return
+boolean searchGroupById(
+	    @NonNull long gid,
+	    int showtype,
+	    HttpCallback httpCallback,
+	    int timeout);
+```
+
+### 18、通过用户ID搜索用户
+
+```
+@param uid 用户Id
+@param httpCallback 回调
+@timeout 超时 单位秒
+@return
+boolean searchUserById(
+	    @NonNull long uid,
+	    HttpCallback httpCallback,
+	    int timeout);
+```
 
 ## 三、聊天室短链接口
 
@@ -322,7 +435,19 @@ boolean shortExitRoom(String roomId, String userId, HttpCallback httpCallback, i
 @return
 boolean shortRoomUserList(String roomId, HttpCallback httpCallback, int timeout);
 ```
-### 6、禁言/解禁
+
+### 6、判断用户是否在房间内
+
+```
+@param uid 游云Id
+@param roomId 房间Id
+@param httpCallback 回调
+@timeout 超时 单位秒
+@return
+boolean shortCheckUserInRoom(String uid, String roomId, HttpCallback httpCallback, int timeout);
+```
+
+### 7、禁言/解禁
 
 ```
 @param uids 游云Id, 被禁言用户,多个用户之间用逗号隔开
@@ -334,6 +459,28 @@ boolean shortRoomUserList(String roomId, HttpCallback httpCallback, int timeout)
 @return
 boolean shortUsersGag(String uids, boolean status, String roomId, long gagTime, HttpCallback httpCallback, int timeout);
 ```
+
+### 8、查询禁言账户
+
+```
+@param httpCallback 回调
+@timeout 超时 单位秒
+@return
+boolean shortGetGagUsers(HttpCallback httpCallback, int timeout);
+```
+
+### 9、设置房间管理员
+
+```
+@param uid 游云Id
+@param role 用户权限,1.普通用户 3.管理员 4.房主
+@param roomId 聊天室房间Id
+@param httpCallback 回调
+@timeout 超时 单位秒
+@return
+boolean shortSetRole(String uid, String role, String roomId, HttpCallback httpCallback, int timeout);
+```
+
 
 ## 四、异步接收消息
 
@@ -368,8 +515,8 @@ swiwch(type){
 	    Log.v("Tag", "发送消息成功,msgId:" + weimiNotice.getWithtag());
 	    SendBackMessage sendBackMessage = (SendBackMessage)weimiNotice.getObject();
 	    break;
-    case disconnected: // 未连接
-        break;
+	case disconnected: // 未连接
+	    break;
 	case connecting: // 连接中
 	    break;
 	case connected: // 连接成功
